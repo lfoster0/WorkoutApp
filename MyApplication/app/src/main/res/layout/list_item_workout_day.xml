@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="workoutDay"
+            type="leefoster.me.workoutapp.database.entries.WorkoutDay"/>
+        <variable
+            name="currentWorkoutDay"
+            type="Boolean"/>
+        <variable
+            name="workoutImage"
+            type="android.graphics.drawable.Drawable"/>
+        <variable
+            name="clickHandler"
+            type="leefoster.me.workoutapp.adapters.WorkoutDayAdapter.WorkoutDayClickHandler"/>
+        <import type="leefoster.me.workoutapp.database.entries.Workout"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="228dp"
+        card_view:cardElevation="@{currentWorkoutDay ? 2 : 0}"
+        card_view:cardCornerRadius="4dp"
+        android:onClick="@{() -> clickHandler.workoutDayClicked(workoutDay)}"
+        >
+        <android.support.constraint.ConstraintLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_bar_cl"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:clipChildren="true">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/workout_image_iv"
+                    tools:src="@drawable/chest_and_back"
+                    android:scaleType="fitXY"
+                    android:src="@{workoutImage}"
+                    />
+
+                <ImageView
+                    android:id="@+id/gradient_overlay_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/gradiant_overlay"
+                    android:visibility="@{workoutDay.isCompleted() ? View.VISIBLE : View.INVISIBLE}"
+                    />
+
+                <ImageView
+                    android:id="@+id/workout_complete_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/colorAccent"
+                    android:elevation="0dp"
+                    android:scaleType="center"
+                    android:src="@mipmap/check"
+                    android:visibility="@{workoutDay.isCompleted() ? View.VISIBLE : View.INVISIBLE}"/>
+            </FrameLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:background="@{currentWorkoutDay ? @color/colorPrimaryLight : @color/colorPrimary}"
+                android:id="@+id/bottom_bar_cl">
+
+                <TextView
+                    android:id="@+id/workout_day_tv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:backgroundTint="@{currentWorkoutDay ? @color/colorAccent : @color/white}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1"
+                    android:text="@{Integer.toString(workoutDay.getDay())}"
+                    android:layout_marginEnd="12dp"
+                    android:elevation="@{currentWorkoutDay ? 2 : 0}"/>
+
+                <TextView
+                    tools:text="Ab Ripper X"
+                    android:text='@{workoutDay.getWorkouts().length > 1 ? ((Workout)(workoutDay.getWorkouts()[1])).name : ""}'
+                    android:id="@+id/secondary_workout_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginStart="16dp"/>
+
+                <TextView
+                    tools:text="Chest &amp; Back"
+                    android:text="@{((Workout)(workoutDay.getWorkouts()[0])).name}"
+                    android:id="@+id/primary_workout_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="#ffffff"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="16dp"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</layout>
